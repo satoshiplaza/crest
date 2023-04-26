@@ -1,1 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gomoku Game</title>
+    <style>
+      .game-board {
+        display: flex;
+        flex-wrap: wrap;
+        width: 600px;
+        height: 600px;
+        margin: auto;
+        border: 1px solid black;
+      }
+      
+      .game-cell {
+        width: 33.33%;
+        height: 33.33%;
+        border: 1px solid black;
+      }
+      
+      .message {
+        text-align: center;
+        font-size: 24px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-board">
+      <div class="game-cell"></div>
+      <div class="game-cell"></div>
+      <div class="game-cell"></div>
+      <div class="game-cell"></div>
+      <div class="game-cell"></div>
+      <div class="game-cell"></div>
+      <div class="game-cell"></div>
+      <div class="game-cell"></div>
+      <div class="game-cell"></div>
+    </div>
+    <p class="message"></p>
+    <script>
+      const gameBoard = document.querySelector('.game-board');
+      const message = document.querySelector('.message');
+      let currentPlayer = 'X';
 
+      gameBoard.addEventListener('click', event => {
+        const cell = event.target;
+
+        if (cell.textContent === '') {
+          cell.textContent = currentPlayer;
+
+          if (checkWin()) {
+            message.textContent = `${currentPlayer} wins!`;
+            return;
+          }
+
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+      });
+
+      function checkWin() {
+        const cells = document.querySelectorAll('.game-cell');
+        const winConditions = [
+          [0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8],
+          [0, 3, 6],
+          [1, 4, 7],
+          [2, 5, 8],
+          [0, 4, 8],
+          [2, 4, 6]
+        ];
+
+        return winConditions.some(condition => {
+          const [a, b, c] = condition;
+          return cells[a].textContent !== '' && cells[a].textContent === cells[b].textContent && cells[b].textContent === cells[c].textContent;
+        });
+      }
+    </script>
+  </body>
+</html>
